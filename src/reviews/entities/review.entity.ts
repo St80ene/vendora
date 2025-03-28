@@ -12,9 +12,10 @@ import {
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Product } from 'src/products/entities/product.entity';
+import { ReviewRating } from '../enums/review-rating.enum';
 
 @Entity({ name: 'reviews' })
-@Unique(['user', 'product']) // 👈 Prevents multiple reviews per user-product pair
+@Unique(['user', 'product']) // Prevents multiple reviews per user-product pair
 export class Review extends BaseEntity {
   constructor(props?: Partial<Review>) {
     super();
@@ -32,8 +33,8 @@ export class Review extends BaseEntity {
   })
   product: Product;
 
-  @Column({ type: 'int', default: 1 })
-  rating: number;
+  @Column({ type: 'enum', enum: ReviewRating })
+  rating: ReviewRating;
 
   @Column({ type: 'text', nullable: true })
   comment: string;
@@ -47,7 +48,7 @@ export class Review extends BaseEntity {
   @BeforeInsert()
   @BeforeUpdate()
   validateRating() {
-    if (this.rating < 1) this.rating = 1;
-    if (this.rating > 5) this.rating = 5;
+    if (this.rating < ReviewRating.ONE) this.rating = ReviewRating.ONE;
+    if (this.rating > ReviewRating.FIVE) this.rating = ReviewRating.FIVE;
   }
 }

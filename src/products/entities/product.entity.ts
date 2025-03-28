@@ -1,20 +1,18 @@
 import { Category } from 'src/categories/entities/category.entity';
 import { OrderItem } from 'src/orderitems/entities/orderitem.entity';
-import { Order } from 'src/orders/entities/order.entity';
 import { Review } from 'src/reviews/entities/review.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   BaseEntity,
   PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
+  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
   Entity,
   OneToMany,
   Column,
-  ManyToOne,
 } from 'typeorm';
+import { ProductStatus } from '../enums/product-status.enum';
 
 @Entity({ name: 'products' })
 export class Product extends BaseEntity {
@@ -37,6 +35,9 @@ export class Product extends BaseEntity {
 
   @Column({ type: 'int', default: 0 })
   stock: number;
+
+  @Column({ type: 'enum', enum: ProductStatus, default: ProductStatus.ACTIVE })
+  status: ProductStatus;
 
   @OneToMany(() => OrderItem, (order_item) => order_item.product)
   order_items: OrderItem[];

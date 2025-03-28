@@ -10,6 +10,7 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
+import { ShipmentStatus } from '../enums/shipment-status.enum';
 
 @Entity({ name: 'shipments' })
 export class Shipment extends BaseEntity {
@@ -23,7 +24,7 @@ export class Shipment extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: ['pending', 'shipped', 'delivered', 'cancelled'],
+    enum: ShipmentStatus,
     default: 'pending',
   })
   status: string;

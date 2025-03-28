@@ -1,5 +1,4 @@
 import { OrderItem } from 'src/orderitems/entities/orderitem.entity';
-import { Product } from 'src/products/entities/product.entity';
 import { Shipment } from 'src/shipments/entities/shipment.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -13,6 +12,7 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
+import { OrderStatus } from '../enums/order-status.enum';
 
 @Entity({ name: 'orders' })
 export class Order extends BaseEntity {
@@ -26,7 +26,7 @@ export class Order extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: ['pending', 'paid', 'shipped', 'delivered', 'cancelled'],
+    enum: OrderStatus,
   })
   status: string;
 

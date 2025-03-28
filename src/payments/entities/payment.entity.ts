@@ -8,6 +8,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { PaymentStatus } from '../enums/payment-status.enum';
+import { PaymentMethod } from '../enums/payment-method.enum';
 
 @Entity({ name: 'payments' })
 export class Payment extends BaseEntity {
@@ -22,10 +24,10 @@ export class Payment extends BaseEntity {
   @Column()
   amount: number;
 
-  @Column({ type: 'enum', enum: ['pending', 'completed', 'failed'] })
+  @Column({ type: 'enum', enum: PaymentStatus })
   status: string;
 
-  @Column({ type: 'enum', enum: ['credit_card', 'paypal', 'bank_transfer'] })
+  @Column({ type: 'enum', enum: PaymentMethod })
   payment_method: string;
 
   @OneToOne((order) => order.payment)

@@ -1,11 +1,12 @@
 import { Address } from 'src/addresses/entities/address.entity';
 import { Cart } from 'src/carts/entities/cart.entity';
-import { Category } from 'src/categories/entities/category.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { Product } from 'src/products/entities/product.entity';
 import { Review } from 'src/reviews/entities/review.entity';
 import {
   BaseEntity,
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -14,6 +15,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserRole } from '../enums/user-role.enum';
+import * as bcrypt from 'bcrypt';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -34,7 +37,7 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', select: false })
   password: string;
 
-  @Column({ type: 'enum', enum: ['admin', 'seller', 'customer'] })
+  @Column({ type: 'enum', enum: UserRole })
   role: string;
 
   @OneToOne((cart) => cart.user)
@@ -61,4 +64,23 @@ export class User extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  /**
+   * 🔒 Hash password before inserting or updating
+   */
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    if (this.password) {
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
+    }
+  }
+
+  /**
+   * ✅ Compare password with hashed password
+   */
+  async validatePassword(plainPassword: string): Promise<boolean> {
+    return await bcrypt.compare(plainPassword, this.password);
+  }
 }
