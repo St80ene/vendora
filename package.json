@@ -24,7 +24,9 @@
     "typeorm": "typeorm-ts-node-commonjs -d src/typeorm.config.ts",
     "migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/typeorm.config.ts",
     "migration:create": "typeorm-ts-node-commonjs migration:create",
-    "make:module": "nest g module "
+    "make:module": "nest g module ",
+    "build:container": "docker-compose up --build",
+    "stop:container": "docker-compose down"
   },
   "engines": {
     "npm": ">=10.0.0",
