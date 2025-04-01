@@ -33,7 +33,7 @@ export class Product extends BaseEntity {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
-  @Column({ type: 'int', default: 0 })
+  @Column({ type: 'int', default: 0 }) // quantity available for sales.
   stock: number;
 
   @Column({ type: 'enum', enum: ProductStatus, default: ProductStatus.ACTIVE })
@@ -58,8 +58,8 @@ export class Product extends BaseEntity {
   reviews: Review[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }
