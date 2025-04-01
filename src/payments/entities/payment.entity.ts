@@ -34,8 +34,8 @@ export class Payment extends BaseEntity {
   order: Order;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }

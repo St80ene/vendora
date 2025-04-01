@@ -28,8 +28,8 @@ export class Category extends BaseEntity {
   products: Product[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }

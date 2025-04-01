@@ -37,7 +37,7 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', select: false })
   password: string;
 
-  @Column({ type: 'enum', enum: UserRole })
+  @Column({ type: 'enum', enum: UserRole, default: 'customer' })
   role: string;
 
   @OneToOne((cart) => cart.user)
@@ -60,10 +60,10 @@ export class User extends BaseEntity {
   addresses: Address[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 
   /**
    * 🔒 Hash password before inserting or updating
