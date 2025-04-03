@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -15,15 +19,31 @@ export class UsersService {
 
   async findOne(email: string) {
     try {
-      // const existing_user = await User.find(email)
-    } catch (error) {}
+      const existing_user = await User.find({ where: { email } });
+
+      if (existing_user) return new NotFoundException();
+
+      return existing_user;
+    } catch (error) {
+      return new InternalServerErrorException();
+    }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto) {
     // return `This action updates a #${id} user`;
   }
 
   remove(id: number) {
     // return `This action removes a #${id} user`;
+  }
+
+  async findById(id: string): Promise<any> {
+    try {
+      return await User.findOne({
+        where: { id },
+      });
+    } catch (error) {
+      new InternalServerErrorException('Error finding agent', error);
+    }
   }
 }

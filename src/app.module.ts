@@ -17,6 +17,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './typeorm.config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { typeOrmConfig } from './typeorm.config';
     ReviewsModule,
     OrdersModule,
     OrderitemsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
