@@ -23,7 +23,7 @@ export class OrderItem extends BaseEntity {
   id: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  price: number;
+  price: number; // for discounted price
 
   @Column({ type: 'int', default: 1 })
   quantity: number;

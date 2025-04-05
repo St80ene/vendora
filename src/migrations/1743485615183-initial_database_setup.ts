@@ -41,6 +41,7 @@ export class InitialDatabaseSetup1743485615183 implements MigrationInterface {
             ],
             default: "'customer'",
           },
+          { name: 'avatar', type: 'varchar', length: '500', isNullable: true },
           {
             name: 'created_at',
             type: 'timestamp',
@@ -96,41 +97,6 @@ export class InitialDatabaseSetup1743485615183 implements MigrationInterface {
       })
     );
 
-    // carts
-    await queryRunner.createTable(
-      new Table({
-        name: 'carts',
-        columns: [
-          { name: 'id', type: 'varchar', length: '36', isPrimary: true },
-          {
-            name: 'user_id',
-            type: 'varchar',
-            length: '36',
-            isUnique: true,
-          },
-          {
-            name: 'created_at',
-            type: 'datetime',
-            default: 'CURRENT_TIMESTAMP',
-          },
-          {
-            name: 'updated_at',
-            type: 'datetime',
-            default: 'CURRENT_TIMESTAMP',
-            onUpdate: 'CURRENT_TIMESTAMP',
-          },
-        ],
-        foreignKeys: [
-          {
-            columnNames: ['user_id'],
-            referencedTableName: 'users',
-            referencedColumnNames: ['id'],
-            onDelete: 'CASCADE',
-          },
-        ],
-      })
-    );
-
     // categories
     await queryRunner.createTable(
       new Table({
@@ -142,6 +108,12 @@ export class InitialDatabaseSetup1743485615183 implements MigrationInterface {
             name: 'created_at',
             type: 'datetime',
             default: 'CURRENT_TIMESTAMP',
+          },
+          {
+            name: 'image_url',
+            type: 'varchar',
+            length: '500',
+            isNullable: true,
           },
           {
             name: 'updated_at',
@@ -171,6 +143,12 @@ export class InitialDatabaseSetup1743485615183 implements MigrationInterface {
           },
           { name: 'category_id', type: 'varchar', length: '36' },
           { name: 'user_id', type: 'varchar', length: '36' },
+          {
+            name: 'image_url',
+            type: 'varchar',
+            length: '500',
+            isNullable: true,
+          },
           {
             name: 'created_at',
             type: 'datetime',
@@ -209,11 +187,44 @@ export class InitialDatabaseSetup1743485615183 implements MigrationInterface {
           { name: 'user_id', type: 'varchar', length: '36' },
           { name: 'status', type: 'varchar', length: '50' },
           {
+            name: 'payment_status',
+            type: 'enum',
+            enum: ['pending', 'paid', 'failed', 'refunded'],
+            default: "'pending'",
+          },
+          {
+            name: 'shipping_cost',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
+            default: '0.0',
+          },
+          {
+            name: 'discount',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
+            default: '0.0',
+          },
+          {
             name: 'total',
             type: 'decimal',
             precision: 10,
             scale: 2,
             default: '0.0',
+          },
+          {
+            name: 'grand_total',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
+            default: '0.0',
+          },
+          {
+            name: 'address_id',
+            type: 'varchar',
+            length: '36',
+            isNullable: true,
           },
           {
             name: 'created_at',
@@ -233,6 +244,12 @@ export class InitialDatabaseSetup1743485615183 implements MigrationInterface {
             referencedTableName: 'users',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
+          },
+          {
+            columnNames: ['address_id'],
+            referencedTableName: 'addresses',
+            referencedColumnNames: ['id'],
+            onDelete: 'SET NULL',
           },
         ],
       })
@@ -317,6 +334,17 @@ export class InitialDatabaseSetup1743485615183 implements MigrationInterface {
             length: '50',
           },
           {
+            name: 'transaction_reference',
+            type: 'varchar',
+            length: '100',
+            isNullable: true,
+          },
+          {
+            name: 'paid_at',
+            type: 'timestamp',
+            isNullable: true,
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'CURRENT_TIMESTAMP',
@@ -352,6 +380,7 @@ export class InitialDatabaseSetup1743485615183 implements MigrationInterface {
             type: 'int',
             isUnique: true,
           },
+          { name: 'photo', type: 'varchar', length: '500', isNullable: true },
           {
             name: 'status',
             type: 'varchar',

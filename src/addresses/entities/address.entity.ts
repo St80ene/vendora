@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   Column,
   ManyToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity({ name: 'addresses' })
@@ -14,6 +15,9 @@ export class Address extends BaseEntity {
     super();
     props && Object.assign(this, props);
   }
+
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   phone: string;
