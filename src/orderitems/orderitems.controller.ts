@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { OrderitemsService } from './orderitems.service';
 import { UpdateOrderitemDto } from './dto/update-orderitem.dto';
@@ -21,13 +22,13 @@ export class OrderitemsController {
   }
 
   @Get()
-  findAll() {
-    return this.orderitemsService.findAll();
+  findAll(@Query() query) {
+    return this.orderitemsService.findAll(query);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.orderitemsService.findOne(+id);
+    return this.orderitemsService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +36,11 @@ export class OrderitemsController {
     @Param('id') id: string,
     @Body() updateOrderitemDto: UpdateOrderitemDto
   ) {
-    return this.orderitemsService.update(+id, updateOrderitemDto);
+    return this.orderitemsService.update(id, updateOrderitemDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.orderitemsService.remove(+id);
+    return this.orderitemsService.remove(id);
   }
 }

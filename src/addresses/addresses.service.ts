@@ -29,8 +29,8 @@ export class AddressesService {
   }
 
   async findAll({
-    page,
-    limit,
+    page = 1,
+    limit = 10,
     user_id,
   }): Promise<ApiResponse<{ addresses: Address[]; total: number }>> {
     try {

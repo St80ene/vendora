@@ -1,5 +1,4 @@
 import { Address } from 'src/addresses/entities/address.entity';
-import { Cart } from 'src/carts/entities/cart.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { Product } from 'src/products/entities/product.entity';
 import { Review } from 'src/reviews/entities/review.entity';
@@ -39,9 +38,6 @@ export class User extends BaseEntity {
 
   @Column({ type: 'enum', enum: UserRole, default: 'customer' })
   role: string;
-
-  @OneToOne((cart) => cart.user)
-  cart: Cart;
 
   @OneToMany(() => Order, (order) => order.user, { cascade: true })
   orders: Order[];

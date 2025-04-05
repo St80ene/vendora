@@ -5,7 +5,6 @@ import { UsersModule } from './users/users.module';
 import { ShipmentsModule } from './shipments/shipments.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ProductsModule } from './products/products.module';
-import { CartsModule } from './carts/carts.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ReviewsModule } from './reviews/reviews.module';
@@ -53,7 +52,6 @@ import { AuthModule } from './auth/auth.module';
     ShipmentsModule,
     PaymentsModule,
     ProductsModule,
-    CartsModule,
     AddressesModule,
     CategoriesModule,
     ReviewsModule,

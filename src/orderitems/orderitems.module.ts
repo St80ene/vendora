@@ -5,5 +5,6 @@ import { OrderitemsController } from './orderitems.controller';
 @Module({
   controllers: [OrderitemsController],
   providers: [OrderitemsService],
+  exports: [OrderitemsService],
 })
 export class OrderitemsModule {}

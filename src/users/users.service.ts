@@ -37,8 +37,8 @@ export class UsersService {
   }
 
   async findAll({
-    page,
-    limit,
+    page = 1,
+    limit = 10,
   }): Promise<ApiResponse<{ users: User[]; total: number }>> {
     try {
       const pageNumber = page || 1;
