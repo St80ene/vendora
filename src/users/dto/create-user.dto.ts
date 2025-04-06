@@ -6,6 +6,7 @@ import {
   IsString,
   Length,
   Matches,
+  IsUUID,
 } from 'class-validator';
 import { UserRole } from '../enums/user-role.enum';
 import { MatchPasswords } from 'src/common/match.decorator'; // Custom decorator for matching fields
@@ -40,4 +41,13 @@ export class CreateUserDto {
   @IsEnum(UserRole)
   @IsOptional()
   role?: UserRole; // Optional, backend can set a default
+
+  @IsOptional()
+  @IsString()
+  @Length(0, 500)
+  avatar_url?: string; // Optional avatar URL
+
+  @IsOptional()
+  @IsString()
+  avatar_public_id?: string; // Optional avatar public ID
 }

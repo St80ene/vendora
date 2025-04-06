@@ -41,7 +41,18 @@ export class InitialDatabaseSetup1743485615183 implements MigrationInterface {
             ],
             default: "'customer'",
           },
-          { name: 'avatar', type: 'varchar', length: '500', isNullable: true },
+          {
+            name: 'avatar_url',
+            type: 'varchar',
+            length: '500',
+            isNullable: true,
+          },
+          {
+            name: 'avatar_public_id',
+            type: 'varchar',
+            length: '500',
+            isNullable: true,
+          },
           {
             name: 'created_at',
             type: 'timestamp',

@@ -12,9 +12,11 @@ import {
   successResponse,
   errorResponse,
 } from 'src/utils/response.utils';
+import { UploadsService } from 'src/uploads/uploads.service';
 
 @Injectable()
 export class UsersService {
+  constructor(private readonly uploadsService: UploadsService) {}
   async create(createUserDto: CreateUserDto): Promise<ApiResponse<User>> {
     try {
       const existing = await User.findOne({
@@ -34,6 +36,45 @@ export class UsersService {
         errorResponse('Error creating user', error)
       );
     }
+  }
+
+  async uploadAvatar(user_id: string, file) {
+    const { data: user } = await this.findById(user_id);
+    if (!user) throw new NotFoundException('User not found');
+
+    const result = await this.uploadsService.uploadFile(file);
+    user.avatar_url = result.url;
+    user.avatar_public_id = result.public_id;
+
+    return user.save();
+  }
+
+  async updateAvatar(user_id: string, file) {
+    const { data: user } = await this.findById(user_id);
+    if (!user) throw new NotFoundException('User not found');
+
+    const result = await this.uploadsService.updateFile(
+      file,
+      user.avatar_public_id
+    );
+    user.avatar_url = result.url;
+    user.avatar_public_id = result.public_id;
+
+    return user.save();
+  }
+
+  async deleteAvatar(user_id: string) {
+    const { data: user } = await this.findById(user_id);
+    if (!user) throw new NotFoundException('User not found');
+
+    if (user.avatar_public_id) {
+      await this.uploadsService.deleteFile(user.avatar_public_id);
+      user.avatar_url = null;
+      user.avatar_public_id = null;
+      return user.save();
+    }
+
+    return user;
   }
 
   async findAll({
@@ -78,7 +119,7 @@ export class UsersService {
       if (!user) {
         throw new NotFoundException(errorResponse('User not found'));
       }
-      return successResponse('User retrieved successfully', user);
+      return successResponse('User retrieved successfully', user as User);
     } catch (error) {
       throw new InternalServerErrorException(
         errorResponse('Error finding user by ID', error)

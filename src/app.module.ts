@@ -18,6 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './typeorm.config';
 import { AuthModule } from './auth/auth.module';
 import { PromoCodesModule } from './promo_codes/promo_codes.module';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { PromoCodesModule } from './promo_codes/promo_codes.module';
     OrderitemsModule,
     AuthModule,
     PromoCodesModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
