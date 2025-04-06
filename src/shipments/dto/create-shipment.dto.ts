@@ -17,6 +17,9 @@ export class CreateShipmentDto {
   @IsString()
   courier: string;
 
+  @IsString()
+  label_url: string;
+
   @IsOptional()
   shipped_at?: Date;
 

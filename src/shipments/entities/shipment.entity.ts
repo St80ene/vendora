@@ -9,6 +9,7 @@ import {
   OneToOne,
   JoinColumn,
   ManyToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ShipmentStatus } from '../enums/shipment-status.enum';
 
@@ -18,6 +19,9 @@ export class Shipment extends BaseEntity {
     super();
     props && Object.assign(this, props);
   }
+
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'int', unique: true })
   tracking_number: number;

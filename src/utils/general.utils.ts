@@ -31,3 +31,9 @@ export const createDefaultDirs = () => {
     );
   }
 };
+
+// Helper function to validate URLs
+export const isValidUrl = (url: string): boolean => {
+  const regex = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z0-9]{2,4}(\/[^\s]*)?$/i;
+  return regex.test(url);
+};
