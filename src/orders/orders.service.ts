@@ -15,21 +15,15 @@ import {
 } from 'src/utils/response.utils';
 import { Order } from './entities/order.entity';
 import { OrderitemsService } from 'src/orderitems/orderitems.service';
-import { Product } from 'src/products/entities/product.entity';
-import { PromoCode } from 'src/promo_codes/entities/promo_code.entity';
-import { priceCalculation } from 'src/utils/price.utils';
-import { OrderStatus } from './enums/order-status.enum';
-import {
-  createShippingLabel,
-  handleShippingAndDelivery,
-} from 'src/utils/shipping.utils';
+import { ShipmentsService } from 'src/shipments/shipments.service';
 
 @Injectable()
 export class OrdersService {
   constructor(
     private readonly userService: UsersService,
     private readonly productsService: ProductsService,
-    private readonly orderItemsService: OrderitemsService
+    private readonly orderItemsService: OrderitemsService,
+    private readonly shipmentService: ShipmentsService
   ) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<ApiResponse<Order>> {
@@ -126,14 +120,14 @@ export class OrdersService {
     try {
       const order = await Order.findOne({ where: { id } });
       if (!order) {
-        throw new NotFoundException(errorResponse('User not found'));
+        throw new NotFoundException(errorResponse('Order not found'));
       }
 
       await order.remove();
-      return successResponse('User successfully deleted', { deleted: true });
+      return successResponse('Order successfully deleted', { deleted: true });
     } catch (error) {
       throw new InternalServerErrorException(
-        errorResponse('Error deleting user', error)
+        errorResponse('Error deleting order', error)
       );
     }
   }
@@ -220,16 +214,11 @@ export class OrdersService {
         throw new Error('Shipping address is incomplete');
       }
 
-      // Step 3: Fulfillment and Shipping
-      // Mark the order as fulfilled or ready for shipping
-      existing_order.status = OrderStatus.SHIPPED; // Update the order status to 'Shipped'
-      shipment.shipped_at = new Date(); // Set the shipped_at date
-      await shipment.save();
-
       // Step 4: Handle Shipping and Delivery (Create shipping label and tracking number)
-      const updatedOrder = await handleShippingAndDelivery(existing_order);
+      const updated_shipment =
+        await this.shipmentService.handleShippingAndDelivery(existing_order);
 
-      if (!updatedOrder) {
+      if (!updated_shipment) {
         throw new Error('Shipping and delivery process failed');
       }
 
@@ -237,12 +226,11 @@ export class OrdersService {
       return {
         success: true,
         message: 'Order successfully processed and shipped',
-        tracking_number: updatedOrder.tracking_number,
-        shipping_label: updatedOrder.shipment.label_url,
+        tracking_number: updated_shipment.tracking_number,
+        shipping_label: updated_shipment.label_url,
+        shipped_at: updated_shipment.shipped_at,
       };
     } catch (error) {
-      console.error('Checkout Error:', error.message);
-
       // Handle errors and throw a response with the error message
       throw new Error(
         error.message || 'An error occurred during shipment processing'
