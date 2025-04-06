@@ -52,14 +52,50 @@ yarn install
 Create a .env file in the root directory and add the required environment variables:
 
 ```
+# Server Configuration
 PORT=3000
-DATABASE_HOST=localhost
-DATABASE_PORT=3306
-DATABASE_USER=root
-DATABASE_PASSWORD=yourpassword
-DATABASE_NAME=vendora
+NODE_ENV=development
+
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=3306
+DB_USERNAME=root
+DB_PASSWORD=yourpassword
+DB_NAME=yourdatabase
+DB_DATABASE_TYPE=mysql
+
+# JWT Authentication
 JWT_SECRET=your_jwt_secret
-BCRYPT_SALT_ROUNDS=12
+JWT_EXPIRES_IN=3600s
+
+# Hashing
+BCRYPT_SALT_ROUNDS=10
+
+FILE_DRIVER=local
+
+NODE_ENV=development
+
+PAYMENT_GATEWAY_SECRET_KEY=
+PAYMENT_GATEWAY_PUBLIC_KEY=
+
+# Mail Configuration (if applicable)
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USER=your_mail_username
+MAIL_PASSWORD=your_mail_password
+MAIL_FROM=noreply@example.com
+
+# Other Services (e.g., Redis, AWS, etc.)
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+# Logging
+LOG_LEVEL=debug
+
+CLOUDINARY_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
 ```
 
 🚀 Running the Application
