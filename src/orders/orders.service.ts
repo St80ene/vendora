@@ -16,6 +16,7 @@ import {
 import { Order } from './entities/order.entity';
 import { OrderitemsService } from 'src/orderitems/orderitems.service';
 import { ShipmentsService } from 'src/shipments/shipments.service';
+import { priceCalculation } from 'src/utils/price.utils';
 
 @Injectable()
 export class OrdersService {
@@ -207,6 +208,18 @@ export class OrdersService {
       }
 
       const { order_items, shipment } = existing_order;
+
+      // initiate payment process
+
+      const price_of_items = priceCalculation(order_items);
+
+      const paymentData = {
+        amount: price_of_items * 100, // Amount in the smallest currency unit (kobo or cents)
+        email: existing_order.user.email, // Customer's email
+        order_id: existing_order.id, // The order ID (used for tracking)
+        callback_url: 'your_callback_url', // The URL to call after payment completion
+        currency: 'NGN', // Change this to your desired currency if necessary
+      };
 
       // Step 2: Validate shipping details (address, etc.)
       const { address } = shipment;
