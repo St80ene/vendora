@@ -1,4 +1,3 @@
-import { OrderItem } from 'src/orderitems/entities/orderitem.entity';
 import {
   Injectable,
   InternalServerErrorException,
@@ -16,6 +15,7 @@ import {
 import { Order } from './entities/order.entity';
 import { OrderitemsService } from 'src/orderitems/orderitems.service';
 import { ShipmentsService } from 'src/shipments/shipments.service';
+import { priceCalculation } from 'src/utils/price.utils';
 
 @Injectable()
 export class OrdersService {
@@ -208,28 +208,42 @@ export class OrdersService {
 
       const { order_items, shipment } = existing_order;
 
-      // Step 2: Validate shipping details (address, etc.)
-      const { address } = shipment;
-      if (!address || !address.phone || !address.city || !address.zip_code) {
-        throw new Error('Shipping address is incomplete');
-      }
+      // initiate payment process
 
-      // Step 4: Handle Shipping and Delivery (Create shipping label and tracking number)
-      const updated_shipment =
-        await this.shipmentService.handleShippingAndDelivery(existing_order);
+      const price_of_items = priceCalculation(order_items);
 
-      if (!updated_shipment) {
-        throw new Error('Shipping and delivery process failed');
-      }
+      // const paymentData = {
+      //   amount: price_of_items * 100, // Amount in the smallest currency unit (kobo or cents)
+      //   email: existing_order.user.email, // Customer's email
+      //   order_id: existing_order.id, // The order ID (used for tracking)
+      //   callback_url: 'your_callback_url', // The URL to call after payment completion
+      //   currency: 'NGN', // Change this to your desired currency if necessary
+      // };
 
-      // Return success response with tracking number and label URL
-      return {
-        success: true,
-        message: 'Order successfully processed and shipped',
-        tracking_number: updated_shipment.tracking_number,
-        shipping_label: updated_shipment.label_url,
-        shipped_at: updated_shipment.shipped_at,
-      };
+      // // Step 2: Validate shipping details (address, etc.)
+      // const { address } = shipment;
+      // if (!address || !address.phone || !address.city || !address.zip_code) {
+      //   throw new Error('Shipping address is incomplete');
+      // }
+
+      // // Step 4: Handle Shipping and Delivery (Create shipping label and tracking number)
+      // const updated_shipment =
+      //   await this.shipmentService.handleShippingAndDelivery(existing_order);
+
+      // if (!updated_shipment) {
+      //   throw new Error('Shipping and delivery process failed');
+      // }
+
+      // // Return success response with tracking number and label URL
+      // return {
+      //   success: true,
+      //   message: 'Order successfully processed and shipped',
+      //   tracking_number: updated_shipment.tracking_number,
+      //   shipping_label: updated_shipment.label_url,
+      //   shipped_at: updated_shipment.shipped_at,
+      // };
+
+      return price_of_items;
     } catch (error) {
       // Handle errors and throw a response with the error message
       throw new Error(
