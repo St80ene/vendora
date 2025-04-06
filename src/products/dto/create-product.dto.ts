@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  IsDate,
 } from 'class-validator';
 import { ProductStatus } from '../enums/product-status.enum';
 
@@ -30,4 +31,18 @@ export class CreateProductDto {
   @IsEnum(ProductStatus)
   @IsOptional()
   status?: ProductStatus;
+
+  @IsOptional()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  discount_value?: number;
+
+  @IsOptional()
+  @IsEnum(['percentage', 'fixed'], {
+    message: 'discount_type must be either percentage or fixed',
+  })
+  discount_type?: 'percentage' | 'fixed';
+
+  @IsOptional()
+  @IsDate()
+  discount_expires_at?: Date;
 }

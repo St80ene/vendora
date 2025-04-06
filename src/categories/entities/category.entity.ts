@@ -1,4 +1,5 @@
 import { Product } from 'src/products/entities/product.entity';
+import { PromoCode } from 'src/promo_codes/entities/promo_code.entity';
 import {
   BaseEntity,
   Column,
@@ -22,10 +23,16 @@ export class Category extends BaseEntity {
   @Column({ length: 500 })
   name: string;
 
+  @Column({ type: 'varchar', length: 500 })
+  image_url: string;
+
   @OneToMany(() => Product, (product) => product.category, {
     cascade: true,
   })
   products: Product[];
+
+  @OneToMany(() => PromoCode, (promo_code) => promo_code.category)
+  promo_codes: PromoCode[];
 
   @CreateDateColumn()
   created_at: Date;

@@ -35,6 +35,9 @@ export class Shipment extends BaseEntity {
   @Column({ type: 'datetime' })
   shipped_at: Date;
 
+  @Column({ type: 'varchar' })
+  label_url: string;
+
   @Column({ type: 'datetime' })
   delivered_at: Date;
 
