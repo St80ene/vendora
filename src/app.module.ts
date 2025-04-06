@@ -19,6 +19,7 @@ import { typeOrmConfig } from './typeorm.config';
 import { AuthModule } from './auth/auth.module';
 import { PromoCodesModule } from './promo_codes/promo_codes.module';
 import { UploadsModule } from './uploads/uploads.module';
+import { PaystackModule } from './paystack/paystack.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { UploadsModule } from './uploads/uploads.module';
     AuthModule,
     PromoCodesModule,
     UploadsModule,
+    PaystackModule,
   ],
   controllers: [AppController],
   providers: [AppService],
