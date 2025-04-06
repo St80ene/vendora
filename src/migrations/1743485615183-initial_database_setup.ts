@@ -150,6 +150,24 @@ export class InitialDatabaseSetup1743485615183 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'discount_value',
+            type: 'decimal',
+            precision: 5,
+            scale: 2,
+            isNullable: true,
+          },
+          {
+            name: 'discount_type',
+            type: 'enum',
+            enum: ['percentage', 'fixed'],
+            isNullable: true,
+          },
+          {
+            name: 'discount_expires_at',
+            type: 'timestamp',
+            isNullable: true,
+          },
+          {
             name: 'created_at',
             type: 'datetime',
             default: 'CURRENT_TIMESTAMP',
@@ -380,7 +398,12 @@ export class InitialDatabaseSetup1743485615183 implements MigrationInterface {
             type: 'int',
             isUnique: true,
           },
-          { name: 'photo', type: 'varchar', length: '500', isNullable: true },
+          {
+            name: 'label_url',
+            type: 'varchar',
+            length: '500',
+            isNullable: true,
+          },
           {
             name: 'status',
             type: 'varchar',

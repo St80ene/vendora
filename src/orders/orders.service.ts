@@ -15,6 +15,14 @@ import {
 } from 'src/utils/response.utils';
 import { Order } from './entities/order.entity';
 import { OrderitemsService } from 'src/orderitems/orderitems.service';
+import { Product } from 'src/products/entities/product.entity';
+import { PromoCode } from 'src/promo_codes/entities/promo_code.entity';
+import { priceCalculation } from 'src/utils/price.utils';
+import { OrderStatus } from './enums/order-status.enum';
+import {
+  createShippingLabel,
+  handleShippingAndDelivery,
+} from 'src/utils/shipping.utils';
 
 @Injectable()
 export class OrdersService {
@@ -87,7 +95,9 @@ export class OrdersService {
         where: { id },
         relations: { user: true, order_items: true },
       });
-      if (!order) throw new Error('Order not found');
+      if (!order) {
+        throw new NotFoundException(errorResponse('Order not found'));
+      }
       return successResponse('Order fetched successfully', order);
     } catch (error) {
       throw new InternalServerErrorException(
@@ -177,6 +187,65 @@ export class OrdersService {
       throw new InternalServerErrorException(
         'Error adding product to order',
         error
+      );
+    }
+  }
+
+  async checkout(order_id: string) {
+    try {
+      // cart validation
+      // shipping details
+      // payment initialization
+      // order summary review
+      // notifications
+      // fulfillment and shipping
+      const existing_order = await Order.findOne({
+        where: { id: order_id },
+        relations: {
+          user: true,
+          shipment: { address: true },
+          order_items: { product: { category: true } },
+        },
+      });
+
+      if (!existing_order) {
+        throw new NotFoundException('Order not found');
+      }
+
+      const { order_items, shipment } = existing_order;
+
+      // Step 2: Validate shipping details (address, etc.)
+      const { address } = shipment;
+      if (!address || !address.phone || !address.city || !address.zip_code) {
+        throw new Error('Shipping address is incomplete');
+      }
+
+      // Step 3: Fulfillment and Shipping
+      // Mark the order as fulfilled or ready for shipping
+      existing_order.status = OrderStatus.SHIPPED; // Update the order status to 'Shipped'
+      shipment.shipped_at = new Date(); // Set the shipped_at date
+      await shipment.save();
+
+      // Step 4: Handle Shipping and Delivery (Create shipping label and tracking number)
+      const updatedOrder = await handleShippingAndDelivery(existing_order);
+
+      if (!updatedOrder) {
+        throw new Error('Shipping and delivery process failed');
+      }
+
+      // Return success response with tracking number and label URL
+      return {
+        success: true,
+        message: 'Order successfully processed and shipped',
+        tracking_number: updatedOrder.tracking_number,
+        shipping_label: updatedOrder.shipment.label_url,
+      };
+    } catch (error) {
+      console.error('Checkout Error:', error.message);
+
+      // Handle errors and throw a response with the error message
+      throw new Error(
+        error.message || 'An error occurred during shipment processing'
       );
     }
   }

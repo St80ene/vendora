@@ -40,4 +40,14 @@ export class OrdersController {
   remove(@Param('id') id: string) {
     return this.ordersService.remove(id);
   }
+
+  @Post(':id/add-product')
+  addProductToOrder(@Query() query) {
+    return this.ordersService.addProductToOrder(query);
+  }
+
+  @Post(':id/checkout')
+  orderCheckout(@Param() id: string, @Query() query) {
+    return this.ordersService.checkout(query);
+  }
 }
