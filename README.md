@@ -36,7 +36,7 @@ Vendora is a powerful backend API designed for modern e-commerce platforms. It p
 
 - Deployment: Docker, CI/CD Ready
 
-📦 Installation
+📦 Installation guide
 
 ```
 # Clone the repository
@@ -156,7 +156,7 @@ For inquiries or contributions, reach out via:
 
 📧 Email: etienejames5@gmail.com
 
-🐦 Twitter: [etienejames5](https://x.com/etienejames5)
+🐦 Twitter(X): [etienejames5](https://x.com/etienejames5)
 
 🔗 LinkedIn: [Etiene Essenoh](https://www.linkedin.com/in/etiene-essenoh/)
 
