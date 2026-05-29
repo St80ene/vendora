@@ -23,7 +23,7 @@ import { PaystackModule } from './paystack/paystack.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(typeOrmConfig),
+    // TypeOrmModule.forRoot(typeOrmConfig),
     ConfigModule.forRoot({ isGlobal: true }),
     NestjsFormDataModule.configAsync({
       useFactory: () => ({

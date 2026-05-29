@@ -17,7 +17,7 @@ export class Address extends BaseEntity {
   }
 
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+   id!: string;
 
   @Column()
   phone: string;
@@ -26,7 +26,7 @@ export class Address extends BaseEntity {
   street: string;
 
   @Column()
-  city: string;
+  public city: string;
 
   @Column()
   state: string;
